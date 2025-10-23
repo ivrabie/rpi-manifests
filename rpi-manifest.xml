@@ -19,7 +19,7 @@
 
 
   <remote name="rpi-linux" 
-          fetch="ssh://git@gitlab.com:vrion69"/>
+          fetch="ssh://git@gitlab.com/vrion69"/>
 
   <!-- Core Yocto layers -->
   <project name="poky" 
