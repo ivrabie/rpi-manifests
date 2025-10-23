@@ -14,6 +14,9 @@
   <remote name="raspberrypi" 
           fetch="https://github.com/agherzan/" />
 
+  <remote name="rust-embedded" 
+          fetch="https://github.com/rust-embedded/" />
+
   <!-- Core Yocto layers -->
   <project name="poky" 
            path="sources" 
@@ -43,5 +46,11 @@
            path="sources/meta-virtualization" 
            revision="scarthgap" 
            remote="yocto" />
+
+  <!-- Rust layer -->
+  <project name="meta-rust-bin" 
+           path="sources/meta-rust-bin" 
+           revision="scarthgap" 
+           remote="rust-embedded" />
 
 </manifest>
