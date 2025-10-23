@@ -16,10 +16,9 @@
 
   <!-- Core Yocto layers -->
   <project name="poky" 
-           path="sources/poky" 
+           path="sources" 
            revision="scarthgap" 
            remote="yocto">
-    <linkfile src="oe-init-build-env" dest="oe-init-build-env"/>
   </project>
 
   <!-- OpenEmbedded layers -->
