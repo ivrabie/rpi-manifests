@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <!-- Default settings for all repositories -->
+  <default revision="scarthgap" remote="yocto" sync-j="4"/>
+  
+  <!-- Define remotes (Git hosting services) -->
+  <remote name="yocto" 
+          fetch="https://git.yoctoproject.org/git/"
+          review="https://wiki.yoctoproject.org/wiki/Contribution_and_Submission_Guide" />
+  
+  <remote name="openembedded" 
+          fetch="https://github.com/openembedded/" />
+  
+  <remote name="raspberrypi" 
+          fetch="https://github.com/agherzan/" />
+
+  <!-- Core Yocto layers -->
+  <project name="poky" 
+           path="sources/poky" 
+           revision="scarthgap" 
+           remote="yocto">
+    <linkfile src="oe-init-build-env" dest="oe-init-build-env"/>
+  </project>
+
+  <!-- OpenEmbedded layers -->
+  <project name="meta-openembedded" 
+           path="sources/meta-openembedded" 
+           revision="scarthgap" 
+           remote="openembedded" />
+
+  <!-- Raspberry Pi layer -->
+  <project name="meta-raspberrypi" 
+           path="sources/meta-raspberrypi" 
+           revision="scarthgap" 
+           remote="raspberrypi" />
+
+  <!-- Additional common layers -->
+  <project name="meta-security" 
+           path="sources/meta-security" 
+           revision="scarthgap" 
+           remote="yocto" />
+
+  <project name="meta-virtualization" 
+           path="sources/meta-virtualization" 
+           revision="scarthgap" 
+           remote="yocto" />
+
+</manifest>
