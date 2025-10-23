@@ -19,7 +19,7 @@
 
 
   <remote name="rpi-linux" 
-          fetch="https://gitlab.com/vrion69/meta-rpilinux1.git" />
+          fetch="https://gitlab.com/vrion69/" />
 
   <!-- Core Yocto layers -->
   <project name="poky" 
@@ -57,7 +57,7 @@
            branch="master" 
            remote="rust-embedded" />
 
-        <project name="meta-rpilinux" 
+        <project name="meta-rpilinux1" 
            path="sources/meta-rpilinux" 
            branch="main"
            remote="rpi-linux" />
