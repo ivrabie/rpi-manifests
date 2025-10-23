@@ -17,6 +17,10 @@
   <remote name="rust-embedded" 
           fetch="https://github.com/rust-embedded/" />
 
+
+  <remote name="rpi-linux" 
+          fetch="https://gitlab.com/vrion69/meta-rpilinux1.git" />
+
   <!-- Core Yocto layers -->
   <project name="poky" 
            path="sources" 
@@ -50,7 +54,12 @@
   <!-- Rust layer -->
   <project name="meta-rust-bin" 
            path="sources/meta-rust-bin" 
-           revision="scarthgap" 
+           branch="master" 
            remote="rust-embedded" />
+
+        <project name="meta-rpilinux" 
+           path="sources/meta-rpilinux" 
+           branch="main"
+           remote="rpi-linux" />
 
 </manifest>
