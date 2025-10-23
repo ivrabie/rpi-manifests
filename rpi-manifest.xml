@@ -57,9 +57,9 @@
            branch="master" 
            remote="rust-embedded" />
 
-        <project name="meta-rpilinux1" 
-           path="sources/meta-rpilinux" 
-           branch="main"
-           remote="rpi-linux" />
+<project name="meta-rpilinux1" 
+        path="sources/meta-rpilinux" 
+        branch="main"
+        remote="rpi-linux" />
 
 </manifest>
