@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "*.bb": "bitbake",
+        "*.bbappend": "bitbake",
+        "*.bbclass": "bitbake",
+        "*.conf": "bitbake",
+        "*.inc": "bitbake"
+    },
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/sources/bitbake/lib",
+        "${workspaceFolder}/sources/meta/lib"
+    ]
+}
