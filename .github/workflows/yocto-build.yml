@@ -74,7 +74,7 @@ jobs:
 
       - name: Ensure clean kas sources dir
         run: |
-          rm -rf sources
+          rm -rf build/sources
 
       - name: Build image with kas
         run: kas build kas/rpi-scarthgap.yml

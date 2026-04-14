@@ -7,7 +7,7 @@
         "*.inc": "bitbake"
     },
     "python.analysis.extraPaths": [
-        "${workspaceFolder}/sources/bitbake/lib",
-        "${workspaceFolder}/sources/meta/lib"
+        "${workspaceFolder}/build/sources/bitbake/lib",
+        "${workspaceFolder}/build/sources/meta/lib"
     ]
 }

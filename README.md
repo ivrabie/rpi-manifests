@@ -45,9 +45,11 @@ sudo apt install -y kas
    kas build kas/rpi-scarthgap.yml
    ```
 
+kas keeps Yocto working data under `build/` (`build/sources`, `build/downloads`, `build/sstate-cache`, `build/tmp`).
+
 ## Common kas commands
 
-- `kas checkout kas/rpi-scarthgap.yml` - Prepare/update source tree and build dir
+- `kas checkout kas/rpi-scarthgap.yml` - Prepare/update source tree in `build/sources` and generate build dir
 - `kas checkout --update kas/rpi-scarthgap.yml` - Pull latest commits on tracked branches
 - `kas shell kas/rpi-scarthgap.yml` - Enter configured build environment shell
 - `kas shell kas/rpi-scarthgap.yml -c 'bitbake-layers show-layers'` - Inspect active layers
@@ -55,8 +57,8 @@ sudo apt install -y kas
 
 ## Configuration files
 
-- `kas/base.yml` - Repository and layer definitions, including ROS layers from `meta-ros`
-- `kas/rpi-scarthgap.yml` - Build profile (`MACHINE`, `DISTRO`, `TARGET`) plus `local_conf_header` tuning migrated from local.conf
+- `kas/base.yml` - Repository and layer definitions checked out under `build/sources`, including ROS layers from `meta-ros`
+- `kas/rpi-scarthgap.yml` - Build profile (`MACHINE`, `DISTRO`, `TARGET`) plus `local_conf_header` tuning migrated from local.conf (including `DL_DIR` and `SSTATE_DIR` under `build/`)
 
 ROS layers enabled in `kas/base.yml`:
 
