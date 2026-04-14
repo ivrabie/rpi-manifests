@@ -7,7 +7,7 @@ Yocto environment preparation for Raspberry Pi builds, now migrated to
 
 - Python 3.8+
 - Git
-- SSH access configured for private repositories (for `meta-rpilinux1`)
+- Network access to clone public layer repositories (including `meta-rpilinux`)
 
 ## Install kas
 

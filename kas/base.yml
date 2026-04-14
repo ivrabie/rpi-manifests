@@ -61,8 +61,8 @@ repos:
     layers:
       .:
 
-  meta-rpilinux1:
-    url: ssh://git@gitlab.com/vrion69/meta-rpilinux1
+  meta-rpilinux:
+    url: https://github.com/ivrabie/meta-rpilinux
     branch: main
     path: sources/meta-rpilinux
     layers:
