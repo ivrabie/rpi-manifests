@@ -75,8 +75,3 @@ You can override these at runtime:
 ```bash
 KAS_MACHINE=raspberrypi5 KAS_TARGET=core-image-base kas build kas/rpi-scarthgap.yml
 ```
-
-## Legacy manifest
-
-`rpi-manifest.xml` is kept for compatibility during migration, but the primary
-workflow is now kas-based.
