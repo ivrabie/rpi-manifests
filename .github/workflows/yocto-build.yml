@@ -72,6 +72,10 @@ jobs:
           restore-keys: |
             yocto-sstate-${{ runner.os }}-scarthgap-rpi4-${{ hashFiles('kas/base.yml', 'kas/rpi-scarthgap.yml') }}-
 
+      - name: Ensure clean kas sources dir
+        run: |
+          rm -rf sources
+
       - name: Build image with kas
         run: kas build kas/rpi-scarthgap.yml
 
