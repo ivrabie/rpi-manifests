@@ -1,0 +1,11 @@
+# kas / Yocto working directories
+sources/
+build/
+downloads/
+sstate-cache/
+tmp/
+
+# kas internal state
+.config.yaml
+.kas/
+.kas_*/

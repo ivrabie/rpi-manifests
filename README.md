@@ -1,53 +1,82 @@
 # rpi-manifests
-Contains the dependencies for the yocto build
 
-## Installing and Using Repo Tool
+Yocto environment preparation for Raspberry Pi builds, now migrated to
+[kas](https://kas.readthedocs.io/).
 
-### Prerequisites
-- Python 3.6 or later
+## Prerequisites
+
+- Python 3.8+
 - Git
+- SSH access configured for private repositories (for `meta-rpilinux1`)
 
-### Installing Repo on Ubuntu
+## Install kas
+
+Recommended (isolated install with `pipx`):
+
+```bash
+pipx install kas
+```
+
+Alternative (distribution package, may be older):
 
 ```bash
 sudo apt update
-sudo apt install repo
+sudo apt install -y kas
 ```
 
-### Using Repo with this manifest
+## Quick start (kas)
 
-1. **Create a new directory for your project:**
+1. Clone this repository:
+
    ```bash
-   mkdir rpi-yocto-build
-   cd rpi-yocto-build
+   git clone https://github.com/ivrabie/rpi-manifests.git
+   cd rpi-manifests
    ```
 
-2. **Initialize repo with this manifest:**
+2. Checkout all Yocto layers and generate build configuration:
+
    ```bash
-   repo init -u https://github.com/ivrabie/rpi-manifests.git -b main -m rpi-manifest.xml
+   kas checkout kas/rpi-scarthgap.yml
    ```
 
-3. **Sync all repositories:**
+3. Build:
+
    ```bash
-   repo sync
+   kas build kas/rpi-scarthgap.yml
    ```
 
-4. **To update all repositories to latest versions:**
-   ```bash
-   repo sync
-   ```
+## Common kas commands
 
-### Common Repo Commands
+- `kas checkout kas/rpi-scarthgap.yml` - Prepare/update source tree and build dir
+- `kas checkout --update kas/rpi-scarthgap.yml` - Pull latest commits on tracked branches
+- `kas shell kas/rpi-scarthgap.yml` - Enter configured build environment shell
+- `kas shell kas/rpi-scarthgap.yml -c 'bitbake-layers show-layers'` - Inspect active layers
+- `kas lock --update kas/rpi-scarthgap.yml` - Create/update lockfile with pinned commits
 
-- `repo status` - Show status of all projects
-- `repo diff` - Show differences in all projects
-- `repo forall -c 'command'` - Run a command in all project directories
-- `repo start <branch-name>` - Start a new branch in all projects
-- `repo upload` - Upload changes for review (if using Gerrit)
+## Configuration files
 
-### Troubleshooting
+- `kas/base.yml` - Repository and layer definitions, including ROS layers from `meta-ros`
+- `kas/rpi-scarthgap.yml` - Build profile (`MACHINE`, `DISTRO`, `TARGET`) plus `local_conf_header` tuning migrated from local.conf
 
-If you encounter permission issues during installation, make sure:
-- The repo binary is executable: `chmod +x ~/bin/repo`
-- Your PATH includes the bin directory: `echo $PATH`
-- You have proper Git configuration: `git config --global user.name "Your Name"` and `git config --global user.email "your.email@example.com"`
+ROS layers enabled in `kas/base.yml`:
+
+- `meta-ros-common`
+- `meta-ros2`
+- `meta-ros2-jazzy`
+
+Defaults in `kas/rpi-scarthgap.yml`:
+
+- `MACHINE = raspberrypi4-64`
+- `DISTRO = poky`
+- `TARGET = rpilinux-image`
+
+You can override these at runtime:
+
+```bash
+KAS_MACHINE=raspberrypi5 KAS_TARGET=core-image-base kas build kas/rpi-scarthgap.yml
+```
+
+## Legacy manifest
+
+`rpi-manifest.xml` is kept for compatibility during migration, but the primary
+workflow is now kas-based.

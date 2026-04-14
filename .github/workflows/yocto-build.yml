@@ -1,0 +1,116 @@
+name: yocto-build
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 0"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: yocto-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/local/lib/android /opt/ghc
+          docker system prune -af || true
+          df -h
+
+      - name: Install Yocto host dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential chrpath cpio debianutils diffstat file gawk gcc \
+            git iputils-ping libegl1-mesa libsdl1.2-dev lz4 python3 \
+            python3-git python3-jinja2 python3-pip python3-pexpect socat \
+            texinfo unzip wget xterm xz-utils zstd
+
+      - name: Install kas
+        run: |
+          python3 -m pip install --user --upgrade pip
+          python3 -m pip install --user kas
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          kas --version
+
+      - name: Ensure user namespaces are available
+        run: |
+          if sysctl kernel.apparmor_restrict_unprivileged_userns >/dev/null 2>&1; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          fi
+          sysctl kernel.unprivileged_userns_clone || true
+
+      - name: Prepare Yocto cache directories
+        run: mkdir -p build/downloads build/sstate-cache
+
+      - name: Restore downloads cache
+        id: restore-dl
+        uses: actions/cache/restore@v4
+        with:
+          path: build/downloads
+          key: yocto-dl-${{ runner.os }}-scarthgap-rpi4-${{ hashFiles('kas/base.yml', 'kas/rpi-scarthgap.yml') }}-build-${{ github.run_id }}
+          restore-keys: |
+            yocto-dl-${{ runner.os }}-scarthgap-rpi4-${{ hashFiles('kas/base.yml', 'kas/rpi-scarthgap.yml') }}-
+
+      - name: Restore sstate cache
+        id: restore-sstate
+        uses: actions/cache/restore@v4
+        with:
+          path: build/sstate-cache
+          key: yocto-sstate-${{ runner.os }}-scarthgap-rpi4-${{ hashFiles('kas/base.yml', 'kas/rpi-scarthgap.yml') }}-build-${{ github.run_id }}
+          restore-keys: |
+            yocto-sstate-${{ runner.os }}-scarthgap-rpi4-${{ hashFiles('kas/base.yml', 'kas/rpi-scarthgap.yml') }}-
+
+      - name: Build image with kas
+        run: kas build kas/rpi-scarthgap.yml
+
+      - name: Save downloads cache
+        if: always() && steps.restore-dl.outputs.cache-primary-key != ''
+        uses: actions/cache/save@v4
+        with:
+          path: build/downloads
+          key: ${{ steps.restore-dl.outputs.cache-primary-key }}
+
+      - name: Save sstate cache
+        if: always() && steps.restore-sstate.outputs.cache-primary-key != ''
+        uses: actions/cache/save@v4
+        with:
+          path: build/sstate-cache
+          key: ${{ steps.restore-sstate.outputs.cache-primary-key }}
+
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yocto-images-raspberrypi4-64-${{ github.run_number }}
+          path: |
+            build/tmp/deploy/images/raspberrypi4-64/*.bmap
+            build/tmp/deploy/images/raspberrypi4-64/*.ext4*
+            build/tmp/deploy/images/raspberrypi4-64/*.manifest
+            build/tmp/deploy/images/raspberrypi4-64/*.sdimg*
+            build/tmp/deploy/images/raspberrypi4-64/*.tar.bz2
+            build/tmp/deploy/images/raspberrypi4-64/*.wic*
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yocto-logs-${{ github.run_number }}
+          path: |
+            build/conf/bblayers.conf
+            build/conf/local.conf
+            build/tmp/log/**
+          if-no-files-found: warn
+          retention-days: 14
