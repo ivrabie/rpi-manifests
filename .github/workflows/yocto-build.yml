@@ -1,6 +1,7 @@
 name: yocto-build
 
 on:
+  pull_request:
   workflow_dispatch:
   schedule:
     - cron: "0 3 * * 0"
@@ -70,6 +71,10 @@ jobs:
           key: yocto-sstate-${{ runner.os }}-scarthgap-rpi4-${{ hashFiles('kas/base.yml', 'kas/rpi-scarthgap.yml') }}-build-${{ github.run_id }}
           restore-keys: |
             yocto-sstate-${{ runner.os }}-scarthgap-rpi4-${{ hashFiles('kas/base.yml', 'kas/rpi-scarthgap.yml') }}-
+
+      - name: Ensure clean kas sources dir
+        run: |
+          rm -rf build/sources
 
       - name: Build image with kas
         run: kas build kas/rpi-scarthgap.yml

@@ -10,7 +10,7 @@ defaults:
 repos:
   poky:
     url: https://git.yoctoproject.org/git/poky
-    path: sources
+    path: build/sources
     layers:
       meta:
       meta-poky:
@@ -18,7 +18,7 @@ repos:
 
   meta-openembedded:
     url: https://github.com/openembedded/meta-openembedded
-    path: sources/meta-openembedded
+    path: build/sources/meta-openembedded
     layers:
       meta-oe:
       meta-python:
@@ -30,7 +30,7 @@ repos:
 
   meta-ros:
     url: https://github.com/ros/meta-ros
-    path: sources/meta-ros
+    path: build/sources/meta-ros
     layers:
       meta-ros-common:
       meta-ros2:
@@ -38,32 +38,32 @@ repos:
 
   meta-raspberrypi:
     url: https://github.com/agherzan/meta-raspberrypi
-    path: sources/meta-raspberrypi
+    path: build/sources/meta-raspberrypi
     layers:
       .:
 
   meta-security:
     url: https://git.yoctoproject.org/git/meta-security
-    path: sources/meta-security
+    path: build/sources/meta-security
     layers:
       .:
 
   meta-virtualization:
     url: https://git.yoctoproject.org/git/meta-virtualization
-    path: sources/meta-virtualization
+    path: build/sources/meta-virtualization
     layers:
       .:
 
   meta-rust-bin:
     url: https://github.com/rust-embedded/meta-rust-bin
     branch: master
-    path: sources/meta-rust-bin
+    path: build/sources/meta-rust-bin
     layers:
       .:
 
-  meta-rpilinux1:
-    url: ssh://git@gitlab.com/vrion69/meta-rpilinux1
+  meta-rpilinux:
+    url: https://github.com/ivrabie/meta-rpilinux
     branch: main
-    path: sources/meta-rpilinux
+    path: build/sources/meta-rpilinux
     layers:
       .:
